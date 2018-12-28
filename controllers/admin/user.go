@@ -62,6 +62,11 @@ func (this *UserController) Edit() {
 	if user.Read() != nil {
 		this.ShowMsg(201,"用户不存在")
 	}
+	if this.Ctx.Request.Method == "POST" {
+		
+	}
+	this.Data["user"] = &user
+	this.display("user_edit")
 }
 func (this *UserController) List()  {
 	user := new(models.User)
