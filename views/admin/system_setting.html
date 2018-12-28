@@ -1,0 +1,106 @@
+
+<div id="app">
+    <el-form ref="seting" :model="seting" label-width="150px">
+        <div style="overflow: hidden;">
+            <div style="width: 400px;float: left;">
+            <el-form-item label="网站名称">
+                <el-input v-model="seting.sitename"></el-input>
+            </el-form-item>
+            <el-form-item label="副标题">
+                <el-input v-model="seting.subtitle"></el-input>
+            </el-form-item>
+            <el-form-item label="网名(昵称)">
+                <el-input v-model="seting.nickname"></el-input>
+            </el-form-item>
+            <el-form-item label="网站URL">
+                <el-input v-model="seting.siteurl"></el-input>
+            </el-form-item>
+            <el-form-item label="新浪微博">
+                <el-input v-model="seting.weibo"></el-input>
+            </el-form-item>
+            <el-form-item label="GitHub">
+                <el-input v-model="seting.github"></el-input>
+            </el-form-item>
+            <el-form-item label="列表每页数量">
+                <el-input v-model="seting.pagesize"></el-input>
+            </el-form-item>
+            </div>
+            <div style="width: 400px;float: left;margin-left: 10px;">
+            <el-form-item label="每页相册数量">
+                <el-input v-model="seting.albumsize"></el-input>
+            </el-form-item>
+            <el-form-item label="网站关键字">
+                <el-input v-model="seting.keywords"></el-input>
+            </el-form-item>
+            <el-form-item label="网站描述">
+                <el-input type="textarea" v-model="seting.description"></el-input>
+            </el-form-item>
+            <el-form-item label="统计代码">
+                <el-input v-model="seting.theme"></el-input>
+            </el-form-item>
+            <el-form-item label="主题模板">
+                <el-input v-model="seting.timezone"></el-input>
+            </el-form-item>
+            <el-form-item label="时区设置">
+                <el-input v-model="seting.stat"></el-input>
+            </el-form-item>
+            </div>
+        </div>
+        <div style="width: 100%;float: left;">
+        <el-form-item>
+            <el-button type="primary" v-on:click="submit" >立即创建</el-button>
+            <el-button>取消</el-button>
+        </el-form-item>
+        </div>
+    </el-form>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            seting: {
+                sitename: '',
+                subtitle: '',
+                nickname: '',
+                siteurl: '',
+                weibo: '',
+                github: '',
+                pagesize: '',
+                albumsize:'',
+                keywords: '',
+                description: '',
+                theme: '',
+                timezone: '',
+                stat: '',
+            }
+        },
+        methods: {
+            submit(){
+                console.log(this.seting);
+                axios.post('/admin/system/setting', this.seting)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
+        created:function () {
+            this.seting.sitename = "{{ .options.Sitename }}";
+            this.seting.subtitle = "{{ .options.Subtitle }}";
+            this.seting.nickname = "{{ .options.Nickname }}";
+            this.seting.siteurl = "{{ .options.Siteurl }}";
+            this.seting.weibo = "{{ .options.Weibo }}";
+            this.seting.github = "{{ .options.Github }}";
+            this.seting.pagesize = "{{ .options.Pagesize }}";
+            this.seting.albumsize = "{{ .options.Albumsize }}";
+            this.seting.keywords = "{{ .options.Keywords }}";
+            this.seting.description = "{{ .options.Description }}";
+            this.seting.theme = "{{ .options.Theme }}";
+            this.seting.timezone = "{{ .options.Timezone }}";
+            this.seting.stat = "{{ .options.Stat }}";
+        }
+
+    })
+</script>

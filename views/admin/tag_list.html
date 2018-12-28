@@ -1,0 +1,98 @@
+<div id="app" style="padding-left: 20px;">
+    <el-table
+            ref="multipleTable"
+            :data="tags"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                prop="Id"
+                label="ID"
+                width="120">
+
+        </el-table-column>
+        <el-table-column
+                prop="Name"
+                label="标签名称"
+                width="870">
+        </el-table-column>
+        <el-table-column
+                prop="Count"
+                label="内容数"
+                show-overflow-tooltip>
+        </el-table-column>
+    </el-table>
+    <el-form :inline="true" :model="operation" class="demo-form-inline">
+        <el-form-item>
+            <el-select v-model="operation.op" placeholder="批量操作">
+                <el-option label="更新统计" value="upcount"></el-option>
+                <el-option label="合并到" value="merge"></el-option>
+                <el-option label="删除" value="delete"></el-option>
+            </el-select>
+                <el-input v-if="show" v-model="toname" style="width: 150px;" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="onSubmit">应用</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+<script>
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            tags: {{.list}},
+            multipleSelection: [],
+            operation: {
+                op: ''
+            },
+            toname:'',
+            show:false,
+        },
+        methods: {
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection);
+            },
+            onSubmit() {
+                var ids = [];
+                var op = this.operation.op;
+                for (i=0;i<this.multipleSelection.length;i++){
+                    ids.push(this.multipleSelection[i].Id)
+                }
+                var data = new FormData();
+                data.append("ids",ids);
+                data.append("op",op);
+                axios.post("/admin/tag/batch",data).then((re)=>{
+                    console.log(re);
+                }).catch((er)=>{
+                    console.log(er);
+                })
+            },
+        },
+        watch:{
+            operation:{//深度监听，可监听到对象、数组的变化
+                handler(val, oldVal){
+                    if(val.op == "merge"){
+                        this.show = true
+                    }else {
+                        this.show = false
+                    }
+                },
+                deep:true
+            }
+        }
+    })
+</script>

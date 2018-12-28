@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>标题</title>
+
+        <link rel="stylesheet" href="/static/layui/css/layui.css">
+        <link rel="stylesheet" href="/static/css/main.css?s=1223">
+
+        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css" media="all">
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/layui/layui.js?s=36"></script>
+        <!-- import Vue.js -->
+        <script src="/static/js/vue.js"></script>
+        <!-- 引入样式 -->
+        <link rel="stylesheet" href="/static/css/element.css">
+        <!-- 引入组件库 -->
+        <script src="/static/js/element.js"></script>
+        <!-- 引入组axios -->
+        <script src="/static/js/axios.min.js"></script>
+
+    </head>
+    <body>
+        <div class="nav-title">
+            <div class="tl fl">
+                页面标题
+            </div>
+            <div class="tr fr">
+                <button class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs" onclick="javascript:history.go(-1);"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                <button class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs" onclick="javascript:window.location.reload();"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+
+            </div>
+
+        </div>
+        <!-- 内容主体区域 -->
+        {{.LayoutContent}}
+    </body>
+</html>

@@ -1,0 +1,71 @@
+<div id="app">
+    <el-table
+            :data="userData"
+            style="width: 100%">
+        <el-table-column
+                prop="Id"
+                label="ID"
+                width="80">
+        </el-table-column>
+        <el-table-column
+                prop="Username"
+                label="用户名"
+                width="80">
+        </el-table-column>
+        <el-table-column
+                prop="Email"
+                label="邮箱"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="Lastlogin"
+                label="最后登录"
+                width="280">
+        </el-table-column>
+        <el-table-column
+                prop="Lastip"
+                label="登录IP"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="Logincount"
+                label="登录次数"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="Active"
+                label="激活状态"
+                width="80">
+        </el-table-column>
+        <el-table-column label="操作">
+            <template slot-scope="scope">
+                <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            userData: {{.list}},
+            date:'',
+            name:'',
+            address:'',
+        },
+        methods:{
+            handleEdit(index, row) {
+                window.location.href = 'edit?id='+row.Id
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            }
+        }
+    })
+</script>

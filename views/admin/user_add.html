@@ -1,0 +1,91 @@
+<div id="app">
+    <div style="padding-left: 70px;width: 29%;">
+        <el-form ref="user" :model="user" :rules="rules2" label-width="80px" class="demo-ruleForm">
+            <el-form-item label="用户名:" prop="username">
+                <el-input v-model="user.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="user.password" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass">
+                <el-input type="password" v-model="user.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱:" prop="email">
+                <el-input v-model="user.email"></el-input>
+            </el-form-item>
+            <el-form-item label="激活状态:" prop="active">
+                <el-radio-group v-model="user.active">
+                    <el-radio label="0">未激活</el-radio>
+                    <el-radio label="1">已激活</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('user')">立即创建</el-button>
+                <el-button @click="resetForm('user')">重置</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</div>
+<script>
+    var validatePass = (rule, value, callback) => {
+        if (value === '') {
+            callback(new Error('请输入密码'));
+        } else {
+            if (this.user.checkPass !== '') {
+                this.$refs.user.validateField('checkPass');
+            }
+            callback();
+        }
+    };
+    var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+            callback(new Error('请再次输入密码'));
+        } else if (value !== this.user.password) {
+            callback(new Error('两次输入密码不一致!'));
+        } else {
+            callback();
+        }
+    };
+    new Vue({
+        el:"#app",
+        data:{
+            user: {
+                username:'',
+                password:'',
+                checkPass: '',
+                email: '',
+                active:"0"
+            },
+            rules2: {
+                password: [
+                    { validator: validatePass, trigger: 'blur' }
+                ],
+                checkPass: [
+                    { validator: validatePass2, trigger: 'blur' }
+                ]
+            }
+        },
+        methods:{
+            submitForm(formName) {
+                if(this.user.password != this.user.checkPass){
+                    this.$message.error('两次密码不一致');
+                    return false;
+                }
+                var data = new FormData();
+                data.append("username",this.user.username);
+                data.append("password",this.user.password);
+                data.append("checkPass",this.user.checkPass);
+                data.append("email",this.user.email);
+                data.append("active",this.user.active);
+                axios.post("add",data).then((re)=>{
+                    console.log(re);
+                }).catch((er)=>{
+                    console.log(er);
+                })
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        }
+    })
+</script>

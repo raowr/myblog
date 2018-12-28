@@ -1,0 +1,184 @@
+<div id="app">
+    <div style="margin-left: 29px;">
+    <el-row>
+        <el-button size="mini" type="primary" @click="onSubmit({status:0})" {{if ne .status 0}}plain{{end}}>已发布({{.count_0}})</el-button>
+        <el-button size="mini" type="primary"  @click="onSubmit({status:1})"  {{if ne .status 1}}plain{{end}}>草稿箱({{.count_1}})</el-button>
+        <el-button size="mini" type="primary"  @click="onSubmit({status:2})"  {{if ne .status 2}}plain{{end}}>回收站({{.count_2}})</el-button>
+    </el-row>
+    <div style="padding-top: 15px;">
+        <el-form :inline="true" :model="search" class="demo-form-inline">
+            <el-form-item label="">
+                <el-select v-model="search.type" placeholder="搜索类型">
+                    <el-option label="标题" value="title"></el-option>
+                    <el-option label="作者" value="author"></el-option>
+                    <el-option label="标签" value="tag"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="">
+                <el-input v-model="search.keyword" placeholder="搜索内容"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit('search')">搜索</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+        <el-table
+                ref="multipleTable"
+                :data="articleList"
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="Id"
+                    label="ID"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="Title"
+                    label="标题"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="Tags"
+                    label="	类别"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="Views"
+                    label="	点击量"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="Author"
+                    label="	发布人"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="Posttime"
+                    label="	发布时间"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="block">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage4"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="10"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="{{.count}}">
+            </el-pagination>
+        </div>
+        <div style="margin-top: 20px">
+            <el-select v-model="op" placeholder="批處理">
+                <el-option label="移至已发布" value="topub"></el-option>
+                <el-option label="移至草稿箱" value="todrafts"></el-option>
+                <el-option label="移至回收站" value="totrash"></el-option>
+                <el-option label="删除" value="delete"></el-option>
+            </el-select>
+            <el-button type="primary" icon="el-icon-search" @click="application">应用</el-button>
+        </div>
+    </div>
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            articleList:[],
+            search:{
+                type:{{.searchtype}},
+                keyword:{{.keyword}},
+            },
+            op:'',
+            status:{{ .status }},
+            input:'',
+            list: [],
+            multipleSelection: [],
+            currentPage1: 5,
+            currentPage2: 5,
+            currentPage3: 5,
+            currentPage4: 4
+        },
+        created: function () {
+            this.creatData()
+        },
+        methods: {
+            creatData(){
+                this.articleList = {{ .list }};
+            },
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            application(){
+                var ids = [];
+                for (i=0;i<this.multipleSelection.length;i++){
+                    ids.push(this.multipleSelection[i].Id)
+                }
+                var opData = new FormData();
+                opData.append('op',this.op);
+                opData.append('ids',ids);
+                axios.post("batch",opData)
+                        .then((re)=>{
+                            if(re.data.Code == 200){
+                                this.$notify({
+                                    title: '成功',
+                                    message: re.data.Msg,
+                                    type: 'success'
+                                });
+                                setTimeout(()=>{
+                                    window.location.href='list?status='+this.status+"&searchtype=" + this.search.type+"&keyword="+this.search.keyword
+                                },3000)
+                            }else {
+                                this.$notify.error({
+                                    title: '错误',
+                                    message: re.data.Msg
+                                });
+                            }
+                        })
+                        .catch((re)=>{
+                            console.log(re);
+                        })
+            },
+            onSubmit(e){
+                 window.location.href='list?status='+e.status+"&searchtype=" + this.search.type+"&keyword="+this.search.keyword
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            },
+            handleEdit(index, row) {
+                window.location.href='edit?id='+row.Id
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            }
+        }
+    })
+</script>
