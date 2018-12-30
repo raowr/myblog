@@ -22,7 +22,7 @@ func init() {
 	}
 	dburl := dbuser + ":" + dbpassword + "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?charset=utf8"
 	orm.RegisterDataBase("default", "mysql", dburl)
-	orm.RegisterModel(new(User), new(Option), new(Post), new(Mood), new(Album), new(Tag), new(TagPost))
+	orm.RegisterModel(new(User), new(Option), new(Post), new(Mood), new(Album), new(Tag), new(TagPost), new(Link))
 	orm.RunSyncdb("default", creatTable, true)
 	if beego.AppConfig.String("rummode") == "dev" {
 		orm.Debug = true
