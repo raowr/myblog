@@ -44,7 +44,7 @@
             </el-upload>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
+            <el-button type="primary" @click="submitForm('form')">立即提交</el-button>
             <el-button @click="resetForm('form')">重置</el-button>
         </el-form-item>
     </el-form>
@@ -55,9 +55,10 @@
         el:"#app",
         data:{
             form:{
-                name:'',
-                rank:'',
-                imageUrl:''
+                id:{{.data.Id}},
+                name:{{.data.Name}},
+                rank:{{.data.Rank}},
+                imageUrl:{{.data.Cover}}
             },
         },
         methods: {
@@ -74,18 +75,19 @@
             },
             submitForm(){
                 var data =new FormData();
+                data.append('id',this.form.id);
                 data.append('name',this.form.name);
                 data.append('rank',this.form.rank);
                 data.append('imageUrl',this.form.imageUrl)
-                axios.post('add',data).then((re)=>{
+                axios.post('edit',data).then((re)=>{
                     if(re.data.Code == 200){
                         this.$message({
                             message: re.data.Msg,
                             type: 'success'
                         });
                         setTimeout(()=>{
-                            window.location.href="list"
-                        },2000)
+                            window.location.href="edit?id="+this.form.id
+                        },2000);
                     }else {
                         this.$message.error(re.data.Msg);
                     }

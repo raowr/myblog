@@ -1,31 +1,31 @@
 <div id="app">
     <el-table
-            :data="tableData"
+            :data="albumList"
             style="width: 100%">
         <el-table-column
-                prop="date"
+                prop="Id"
                 label="ID"
                 width="80">
         </el-table-column>
         <el-table-column
-                prop="name"
+                prop="Name"
                 label="相册名"
                 width="80">
         </el-table-column>
         <el-table-column
-                prop="name"
+                prop="Posttime"
                 label="创建时间"
-                width="80">
+                width="280">
         </el-table-column>
         <el-table-column
-                prop="name"
+                prop="Rank"
                 label="排序值"
                 width="80">
         </el-table-column>
         <el-table-column
-                prop="name"
+                prop="Cover"
                 label="封面"
-                width="80">
+                width="280">
         </el-table-column>
         </el-table-column>
         <el-table-column label="操作">
@@ -45,35 +45,30 @@
     new Vue({
         el:"#app",
         data:{
-            tableData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
-            date:'',
-            name:'',
-            address:'',
+            albumList: {{.list}},
         },
         methods:{
-            methods: {
-                handleEdit(index, row) {
-                    console.log(index, row);
-                },
-                handleDelete(index, row) {
-                    console.log(index, row);
-                }
+            handleEdit(index, row) {
+                window.location.href = "edit?id="+row.Id
+            },
+            handleDelete(index, row) {
+                var data = new FormData();
+                data.append('id',row.Id);
+                axios.post('delete',data).then((re)=>{
+                    if (re.data.Code == 200){
+                        this.$message({
+                            message: re.data.Msg,
+                            type: 'success'
+                        });
+                        setTimeout(()=>{
+                            window.location.href='list'
+                        },2000)
+                    }else {
+                        this.$message.error(re.data.Msg);
+                    }
+                }).catch(()=>{
+
+                })
             }
         }
     })
