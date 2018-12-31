@@ -42,13 +42,28 @@
             tableData: {{.list}},
         },
         methods:{
-            methods: {
-                handleEdit(index, row) {
-                    console.log(index, row);
-                },
-                handleDelete(index, row) {
-                    console.log(index, row);
-                }
+            handleEdit(index, row) {
+                window.location.href="edit?id="+row.Id
+            },
+            handleDelete(index, row) {
+                var data = new FormData();
+                data.append("id",row.Id);
+                axios.post('delete',data).then((re)=>{
+                    if(re.data.Code == 200){
+                        this.$message({
+                            message: re.data.Msg,
+                            type: 'success'
+                        });
+                        setTimeout(function () {
+                            window.location.href='list'
+                        },2000)
+
+                    }else {
+                        this.$message.error('删除失败');
+                    }
+                }).catch((er)=>{
+                    this.$message.error(er);
+                })
             }
         }
     })

@@ -1,0 +1,59 @@
+<div id="app">
+    <div style="width: 500px;padding-left: 40px;">
+        <el-form ref="form" :model="form" label-width="100px">
+            <el-form-item label="网站名称：" prop = "sitename">
+                <el-input v-model="form.sitename"></el-input>
+            </el-form-item>
+            <el-form-item label="网站地址" prop = "url">
+                <el-input v-model="form.url"></el-input>
+            </el-form-item>
+            <el-form-item label="排序值" prop = "rank">
+                <el-input v-model="form.rank"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
+                <el-button @click="resetForm('form')">取消</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            form:{
+                id:{{.link.Id}},
+                sitename:{{.link.Sitename}},
+                url:{{.link.Url}},
+                rank:{{.link.Rank}}
+            }
+        },
+        methods: {
+            submitForm(formName) {
+                var data = new FormData();
+                data.append('id',this.form.id);
+                data.append('sitename',this.form.sitename);
+                data.append('url',this.form.url);
+                data.append('rank',this.form.rank);
+                axios.post('edit',data).then((re)=>{
+                    if(re.data.Code == 200){
+                        this.$message({
+                            message: re.data.Msg,
+                            type: 'success'
+                        });
+                        setTimeout(()=>{
+                            window.location.href="list"
+                        },2000)
+                    }else {
+                        this.$message.error(re.data.Msg);
+                    }
+                }).catch((er)=>{
+                    this.$message.error(er);
+                })
+            },
+            resetForm(formName){
+                this.$refs[formName].resetFields();
+            }
+        }
+    })
+</script>
