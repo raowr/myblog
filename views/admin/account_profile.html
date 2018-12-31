@@ -1,0 +1,74 @@
+<div id="profile" style="padding-left: 60px;">
+    <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="账号" >
+            {{.user.Username}}
+        </el-form-item>
+        <el-form-item label="登录次数">
+        {{.user.Logincount}}
+        </el-form-item>
+        <el-form-item label="最后登录">
+        {{date .user.Lastlogin "Y-m-d H:i:s"}} ({{.user.Lastip}})
+        </el-form-item>
+        <el-form-item label="当前密码" prop="password" style="width: 400px;">
+            <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newpassword" style="width: 400px;">
+            <el-input type="password" v-model="form.newpassword" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="newpassword2" style="width: 400px;">
+            <el-input type="password" v-model="form.newpassword2" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="submitForm('form')">提交</el-button>
+            <el-button @click="resetForm('form')">重置</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+<script>
+    new Vue({
+        el:"#profile",
+        data:{
+            form:{
+                password:'',
+                newpassword:'',
+                newpassword2:'',
+            }
+        },
+        methods:{
+            submitForm(formName) {
+                var data = new FormData()
+                data.append('password',this.form.password)
+                data.append('newpassword',this.form.newpassword)
+                data.append('newpassword2',this.form.newpassword2)
+                axios.post('profile',data).then((re)=>{
+                    if (re.data.Code == 200){
+                        this.$message({
+                            showClose: true,
+                            message: re.data.Msg,
+                            type: 'success'
+                        });
+                        setTimeout(()=>{
+                            window.open("logout")
+
+                        },2000)
+                    }else {
+                        this.$message({
+                            showClose: true,
+                            message: re.data.Msg,
+                            type: 'error'
+                        });
+                    }
+                }).catch((er)=>{
+                    this.$message({
+                        showClose: true,
+                        message: er,
+                        type: 'error'
+                    });
+                })
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        }
+    })
+</script>
