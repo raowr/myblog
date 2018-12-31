@@ -90,7 +90,7 @@ func (this *ArticleController) Save(){
 		}
 	}
 if id < 1{
-	post.Userid = this.usserid
+	post.Userid = this.userid
 	post.Author = this.username
 	post.Posttime = this.getTime()
 	post.Updated = this.getTime()
