@@ -75,6 +75,13 @@ func (this *baseController) getTime() time.Time {
 	return time.Now().UTC().Add(time.Duration(add))
 }
 
+//权限验证
+func (this *baseController) checkPermission() {
+	if this.userid != 1 && this.controllerName == "user" {
+		this.ShowMsg(201,"抱歉，只有超级管理员才能进行该操作！")
+	}
+}
+
 func (this *baseController) print_r(options interface{})  {
 	this.Data["json"] = options
 	this.ServeJSON()
