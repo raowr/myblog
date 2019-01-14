@@ -5,6 +5,8 @@
 <title>会员登录</title>
 <link rel="stylesheet" type="text/css" href="/static/css/login_style.css" />
 <link rel="stylesheet" type="text/css" href="/static/css/login_body.css"/>
+<!-- import Vue.js -->
+<script src="/static/js/vue.js"></script>
     <style>
 		body{
             background:url(/static/img/cloud.jpg) 0 bottom repeat-x  #049ec4;
@@ -17,16 +19,16 @@
 		<form action="" method="post">
 			<h1>会员登录</h1>
 			<div>
-				<input type="text" name="account" placeholder="账号" required="" id="username" />
+				<input type="text" name="account" v-model="form.account" placeholder="账号" required="" id="username" />
 			</div>
 			<div>
-				<input type="password" name="password" placeholder="密码" required="" id="password" />
+				<input type="password" name="password" v-model="form.password" placeholder="密码" required="" id="password" />
 			</div>
 			 <div class="">
 				<span class="help-block u-errormessage" id="js-server-helpinfo">&nbsp;</span>			</div> 
 			<div>
 				<!-- <input type="submit" value="Log in" /> -->
-				<input type="submit" value="登录" class="btn btn-primary" id="js-btn-login"/>
+				<input type="submit" @click="submitLogin" id="submit" value="登录" />
 				<a href="#">忘记密码?</a>
 				<!-- <a href="#">Register</a> -->
 			</div>
@@ -47,7 +49,13 @@
                 account:"",
                 password:""
             }
-        }
+        },
+		methods:{
+			submitLogin(){
+				var submit = document.getElementById('submit');
+
+			}
+		}
     })
 </script>
 
