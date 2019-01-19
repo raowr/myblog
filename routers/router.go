@@ -9,12 +9,13 @@ import (
 
 func init() {
 	// beego.Router("/", &controllers.MainController{})
+	beego.Router("/", &blog.MainController{}, "*:Index")
 	beego.Router("/index", &blog.MainController{}, "*:Index")
 	beego.Router("/user", &controllers.UserController{}, "*:Index")
 	beego.Router("/admin", &admin.IndexController{}, "*:Index")
 	beego.Router("/admin/login", &admin.AccountController{}, "*:Login")
-	beego.Router("/admin/logout",&admin.AccountController{},"*:Logout")
-	beego.Router("/admin/profile",&admin.AccountController{},"*:Profile")
+	beego.Router("/admin/logout", &admin.AccountController{}, "*:Logout")
+	beego.Router("/admin/profile", &admin.AccountController{}, "*:Profile")
 	beego.Router("/admin/start", &admin.IndexController{}, "*:Start")
 	beego.Router("/life:page:int.html", &blog.MainController{}, "*:BlogList")
 	beego.Router("/introduce.html", &blog.MainController{}, "*:Introduce")
