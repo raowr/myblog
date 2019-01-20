@@ -130,17 +130,17 @@ func (this *ArticleController) Save() {
 	} else {
 		post.Posttime, _ = time.Parse("2018-01-01 01:01:01", post.Posttime.Format("2018-01-01 01:01:01"))
 	}
-
 	post.Status = int8(status)
 	post.Title = title
 	post.Color = ""
 	post.Istop = istop
 	post.Cover = cover
 	post.Content = content
+	post.Brief = string([]rune(content)[:200])
 	post.Urlname = urlname
 	post.Urltype = urltype
 	post.Updated = this.getTime()
-	post.Update("tags", "status", "title", "color", "cover", "istop", "content", "urlname", "urltype", "updated", "posttime")
+	post.Update("tags", "status", "title", "color", "cover", "istop", "content", "urlname", "urltype", "updated", "posttime", "brief")
 
 RD:
 	this.Redirect("/admin/article/list", 302)

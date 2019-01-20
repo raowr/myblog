@@ -12,11 +12,12 @@
         <el-form-item label="标题图片">
             <el-upload
                     class="avatar-uploader"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="upload"
+                    name="coverFile"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                <img v-if="article.cover" :src="article.cover" class="avatar">
+                <img v-if="article.cover" :src="article.coverUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
         </el-form-item>
@@ -115,6 +116,7 @@
         el:"#app",
         data:{
             article:{
+                id:{{.post.Id}},
                 title:{{.post.Title}},
                 istop:{{.post.Istop}},
                 cover:{{.post.Cover}},
@@ -123,7 +125,8 @@
                 urltype:{{.post.Urltype}},
                 posttime:{{.post.Posttime}},
                 status:{{.post.Status}},
-                content:{{.post.Content}}
+                content:{{.post.Content}},
+                coverUrl:"http://localhost:8080/"+{{.post.Cover}}
             }
         },
         methods: {
@@ -136,6 +139,7 @@
                 this.article.content = html;
 
                 var formData = new FormData();
+                formData.append("id",this.article.id);
                 formData.append("title",this.article.title);
                 formData.append("istop",this.article.istop);
                 formData.append("cover",this.article.cover);
@@ -155,7 +159,8 @@
                     });
             },
             handleAvatarSuccess(res, file) {
-                this.article.cover = URL.createObjectURL(file.raw);
+                this.article.cover = res;
+                this.article.coverUrl = "http://localhost:8080/"+res;
             },
             beforeAvatarUpload(file) {
                 // const isJPG = file.type === 'image/jpeg';

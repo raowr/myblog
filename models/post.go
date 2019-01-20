@@ -15,6 +15,7 @@ type Post struct {
 	Urlname  string `orm:"size(100);index"`
 	Urltype  int8
 	Content  string    `orm:"type(text)"`
+	Brief    string    `orm:"type(text)"`
 	Tags     string    `orm:"size(100)"`
 	Posttime time.Time `orm:"type(datetime);index"`
 	Views    int64
@@ -31,7 +32,7 @@ func (m *Post) TableName() string {
 
 /** 数据插入 */
 func (m *Post) Insert() error {
-	if _, err := orm.NewOrm().Insert(m); err != nil{
+	if _, err := orm.NewOrm().Insert(m); err != nil {
 		return err
 	}
 	return nil
@@ -39,7 +40,7 @@ func (m *Post) Insert() error {
 
 /** 读数据 */
 func (m *Post) Read(fields ...string) error {
-	if err :=orm.NewOrm().Read(m, fields...); err != nil{
+	if err := orm.NewOrm().Read(m, fields...); err != nil {
 		return err
 	}
 	return nil
@@ -47,7 +48,7 @@ func (m *Post) Read(fields ...string) error {
 
 /** 更新数据 */
 func (m *Post) Update(fields ...string) error {
-	if _,err := orm.NewOrm().Update(m, fields...); err != nil {
+	if _, err := orm.NewOrm().Update(m, fields...); err != nil {
 		return err
 	}
 	return nil
@@ -56,13 +57,13 @@ func (m *Post) Update(fields ...string) error {
 /** 删除数据 */
 
 func (m *Post) Delete() error {
-	if m.Tags != ""{
+	if m.Tags != "" {
 		o := orm.NewOrm()
-		oldtags := strings.Split(strings.Trim(m.Tags,","),",")
-		o.QueryTable(&Tag{}).Filter("name_in",oldtags).Update(orm.Params{"count":orm.ColValue(orm.ColMinus,1)})
-		o.QueryTable(&TagPost{}).Filter("postid",m.Id).Delete()
+		oldtags := strings.Split(strings.Trim(m.Tags, ","), ",")
+		o.QueryTable(&Tag{}).Filter("name_in", oldtags).Update(orm.Params{"count": orm.ColValue(orm.ColMinus, 1)})
+		o.QueryTable(&TagPost{}).Filter("postid", m.Id).Delete()
 	}
-	if _, err := orm.NewOrm().Delete(m); err !=nil {
+	if _, err := orm.NewOrm().Delete(m); err != nil {
 		return err
 	}
 	return nil
@@ -73,5 +74,3 @@ func (m *Post) Delete() error {
 func (m *Post) Query() orm.QuerySeter {
 	return orm.NewOrm().QueryTable(m)
 }
-
-
