@@ -5,13 +5,13 @@
 </h1>
 <div class="bloglist left">
   {{range $k, $v := .list}}
-      <h3><a href="{{$v.Link}}"  target="_blank">{{str2html $v.ColorTitle}}</a></h3>
-      <figure><a href="{{$v.Link}}"><img src="{{$v.Cover}}"></a></figure>
+      <h3><a href="{{$v.Urlname}}"  target="_blank">{{str2html $v.Title}}</a></h3>
+      <figure><a href="{{$v.Urlname}}"><img src="{{$v.Cover}}"></a></figure>
       <ul>
-        <p>{{str2html $v.Excerpt}}</p>
-        <a title="阅读全文" href="{{$v.Link}}"  target="_blank" class="readmore">阅读全文>></a>
+        <p>{{str2html $v.Brief}}</p>
+        <a title="阅读全文" href="{{$v.Urlname}}"  target="_blank" class="readmore">阅读全文>></a>
       </ul>
-      <p class="lifedateview"><span>{{date $v.Posttime "Y-m-j"}}</span><span>作者：{{$v.Author}}</span><span>所属分类：[{{str2html $v.TagsLink}}]</span></p>
+      <p class="lifedateview"><span>{{date $v.Posttime "Y-m-j"}}</span><span>作者：{{$v.Author}}</span><span>所属分类：[{{str2html $v.Tags}}]</span></p>
   {{end}}
   {{str2html .pagebar}}
 </div>
