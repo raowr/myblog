@@ -33,6 +33,7 @@ func init() {
 	beego.Router("/admin/article/list", &admin.ArticleController{}, "*:List")
 	beego.Router("/admin/article/save", &admin.ArticleController{}, "*:Save")
 	beego.Router("/admin/article/batch", &admin.ArticleController{}, "*:Batch")
+	beego.Router("/admin/article/upload", &admin.ArticleController{}, "*:Upload")
 
 	//说说管理
 	beego.Router("/admin/mood/add", &admin.MoodController{}, "*:Add")
