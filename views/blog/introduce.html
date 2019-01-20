@@ -21,7 +21,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <link rel="stylesheet" href="css/swipebox.css">
 <!--//Custom Theme files-->
 <!--js-->
-<script src="views/blog/js/jquery-1.11.1.min.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/jQuery.print.js"></script>
 <!-- //js -->
 <!--web-fonts-->
 <link href='//fonts.googleapis.com/css?family=Overlock:400,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
@@ -38,6 +39,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			});
 		});
 </script>
+    <script type="text/javascript">
+        function doPrint() {
+            $("#print").print();
+        }
+    </script>
 <!--//end-smooth-scrolling-->
 	<style>
         .banner{
@@ -50,6 +56,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			margin-bottom: 4px;
 		}
         .btnTop { position: fixed; right: 1%; bottom: 2%; cursor: pointer; opacity: .7; z-index: 9; }
+        #printBtn { position: fixed; right: 1%; top: 2%; cursor: pointer; opacity: .7; z-index: 9; }
         .btnTop:hover { opacity: 1;}
         .imageTop { height: 72px; height: 72px;}
 	</style>
@@ -57,10 +64,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <body>
 	<h1 class="t_nav">
 		<span>“慢生活”不是懒惰，放慢速度不是拖延时间，而是让我们在生活中寻找到平衡。</span>
+        <span></span>
 		<a href="/" class="n1">网站首页</a>
 		<a href="/life.html" class="n2">成长录</a>
 	</h1>
 	<!--banner-->
+    <div id="print">
 	<div id="home" class="banner">
 		<div class="banner-info">
 			<div class="container">
@@ -553,6 +562,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<!-- //swipe box js -->
 		</div>
 	</div>
+    </div>
 	<!--//portfolio-->
 	<!--contact -->
 	<div class="welcome contact" id="contact">
@@ -596,6 +606,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <a id="btnTop" class="btnTop"  href="javascript:;" title="Back to top">
         <img src="views/blog/images/totop.png" class="imageTop">
     </a>
+    <button type="button" id="printBtn" style="height: 41px;" onclick="doPrint()">打印</button>
 	<!--smooth-scrolling-of-move-up-->
 	<script type="text/javascript">
 		$(document).ready(function() {
