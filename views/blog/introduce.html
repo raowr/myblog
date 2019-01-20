@@ -27,21 +27,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!--start-smooth-scrolling-->
 <script type="text/javascript" src="views/blog/js/move-top.js"></script>
 <script type="text/javascript" src="views/blog/js/easing.js"></script>
-<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			$(".scroll").click(function(event){		
-				event.preventDefault();
-				$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
-			});
-		});
-</script>
+<!--//end-smooth-scrolling-->
     <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $(".scroll").click(function(event){
+                event.preventDefault();
+                var bignav  = document.getElementById("nav");//获取到导航栏id
+                var bignavTop = bignav.offsetTop;
+                var topScroll =document.documentElement.scrollTop;//滚动的距离,距离顶部的距离
+                var top = 0;
+                if(topScroll >= bignavTop){
+                    top = $(this.hash).offset().top;
+				}else {
+                    top = $(this.hash).offset().top-60;
+				}
+                $('html,body').animate({scrollTop:top},1000);
+            });
+        });
         function doPrint() {
             $("#print").print();
         }
     </script>
-<!--//end-smooth-scrolling-->
-	<style>
+    <style>
         .banner{
 			height: 464px;
 		}
@@ -62,7 +69,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<span>“慢生活”不是懒惰，放慢速度不是拖延时间，而是让我们在生活中寻找到平衡。</span>
         <span></span>
 		<a href="/" class="n1">网站首页</a>
-		<a href="/life.html" class="n2">成长录</a>
+		<a href="/introduce.html" class="n2">关于我</a>
 	</h1>
 	<!--banner-->
     <div id="print">
@@ -115,7 +122,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</div>
 	<!--//banner-->
 	<!--top-nav-->
-	<div class="top-nav wow">
+	<div id="nav" class="top-nav wow">
 		<div class="container">
 			<div class="navbar-header logo">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -610,10 +617,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				scrollSpeed: 1200,
 				easingType: 'linear' 
 			};
-			
-			$().UItoTop({ easingType: 'easeOutQuart' });
+            $().UItoTop({ easingType: 'easeOutQuart' });
 			
 		});
+     var bignav  = document.getElementById("nav");//获取到导航栏id
+     var bignavTop = bignav.offsetTop;
+	 window.onscroll=function(){
+		var topScroll =document.documentElement.scrollTop;//滚动的距离,距离顶部的距离
+         if(topScroll >= bignavTop){  //当滚动距离大于250px时执行下面的东西
+			bignav.style.position = 'fixed';
+			bignav.style.top = '0';
+			bignav.style.zIndex = '9999';
+		  }else{//当滚动距离小于250的时候执行下面的内容，也就是让导航栏恢复原状
+			   bignav.style.position = 'static';
+		  }
+		}
 	</script>
 	<!--//smooth-scrolling-of-move-up-->
 	<!-- Bootstrap core JavaScript
