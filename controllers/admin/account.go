@@ -14,25 +14,19 @@ func (this *AccountController) Login() {
 	if this.Ctx.Request.Method == "POST" {
 		account := strings.TrimSpace(this.GetString("account"))
 		password := strings.TrimSpace(this.GetString("password"))
+		if(account == ""){
+			this.ShowMsg(201,"请输入帐号")
+		}
+		if(password == ""){
+			this.ShowMsg(202,"请输入密码")
+		}
 		if account != "" && password != "" {
 			var user models.User
 			user.Username = account
 			if user.Read("Username") != nil || user.Password != models.Md5([]byte(password)) {
-				//this.ShowMsg(201,"账号或密码错误")
-				re := map[string]interface{}{
-					"code": 201,
-					"msg":  "账号或密码错误",
-				}
-				this.Data["json"] = re
-				this.ServeJSON()
+				this.ShowMsg(201,"账号或密码错误")
 			} else if user.Active == 0 {
-				re := map[string]interface{}{
-					"code": 202,
-					"msg":  "该账号未激活",
-				}
-				this.Data["json"] = re
-				this.ServeJSON()
-				//this.ShowMsg(202,"该账号未激活")
+				this.ShowMsg(202,"该账号未激活")
 			} else {
 				user.Logincount += 1
 				user.Lastip = this.getClientIp()
@@ -40,8 +34,9 @@ func (this *AccountController) Login() {
 				user.Update()
 				authkey := models.Md5([]byte(this.getClientIp() + "|" + user.Password))
 				this.Ctx.SetCookie("auth", strconv.FormatInt(user.Id, 10)+"|"+authkey)
+				this.ShowMsg(200,"登录成功,欢迎！")
 			}
-			this.Redirect("/admin", 302)
+			//this.Redirect("/admin", 302)
 		}
 	}
 	this.TplName = "admin/account_login.html"
