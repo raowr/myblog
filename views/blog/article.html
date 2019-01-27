@@ -5,7 +5,7 @@
 </h1>
 
 <div class="index_about">
-    <h2 class="c_titile">{{str2html .post.ColorTitle}}</h2>
+    <h2 class="c_titile">{{str2html .post.Title}}</h2>
     <p class="box_c">
     	<span class="d_time">发布时间：{{date .post.Posttime "Y-m-j"}}</span>
     	<span>编辑：{{.post.Author}}</span>
@@ -15,18 +15,18 @@
      	{{str2html .post.Content}}
     </ul>
     <div class="keybq">
-    <p><span>关键字词</span>[{{str2html .post.TagsLink}}]</p>
+    <p><span>关键字词</span>[{{str2html .post.Tags}}]</p>
     
     </div>
     <div class="ad"> </div>
-    <div class="nextinfo">
-            {{if .pre}}
-                <p>上一篇：<a href="{{.pre.Link}}">{{str2html .pre.ColorTitle}}</a></p>
-            {{end}}
-            {{if .next}}
-                <p>下一篇：<a href="{{.next.Link}}">{{str2html .next.ColorTitle}}</a></p>
-            {{end}}
-    </div>
+    {{/*<div class="nextinfo">*/}}
+            {{/*{{if .pre}}*/}}
+                {{/*<p>上一篇：<a href="{{.pre.Link}}">{{str2html .pre.Title}}</a></p>*/}}
+            {{/*{{end}}*/}}
+            {{/*{{if .next}}*/}}
+                {{/*<p>下一篇：<a href="{{.next.Link}}">{{str2html .next.Title}}</a></p>*/}}
+            {{/*{{end}}*/}}
+    {{/*</div>*/}}
     <div class="duoshuo">
         <div class="ds-thread"></div>
     </div>

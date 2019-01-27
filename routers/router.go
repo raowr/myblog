@@ -10,7 +10,9 @@ import (
 func init() {
 	// beego.Router("/", &controllers.MainController{})
 	beego.Router("/", &blog.MainController{}, "*:Index")
+	beego.Router("/404.html", &blog.MainController{}, "*:GoTo404")
 	beego.Router("/index", &blog.MainController{}, "*:Index")
+	beego.Router("/article/:id:int", &blog.MainController{}, "*:Show")
 	beego.Router("/user", &controllers.UserController{}, "*:Index")
 	beego.Router("/admin", &admin.IndexController{}, "*:Index")
 	beego.Router("/admin/login", &admin.AccountController{}, "*:Login")

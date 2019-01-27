@@ -3,6 +3,7 @@ package blog
 import (
 	"myblog/models"
 	"strconv"
+	"strings"
 )
 
 type MainController struct {
@@ -21,6 +22,29 @@ func (this *MainController) Index() {
 	this.Data["pagebar"] = models.NewPager(int64(this.page), int64(count), int64(this.pagesize), "/index%d.html").ToString()
 	this.setHeadMetas()
 	this.display("index")
+}
+
+//文章详情
+func (this *MainController) Show() {
+	var (
+		post *models.Post = new(models.Post)
+		err  error
+	)
+	id, _ := strconv.Atoi(this.Ctx.Input.Param(":id"))
+	post.Id = int64(id)
+	err = post.Read()
+	if err != nil || post.Status != 0 {
+		this.Redirect("/404.html", 302)
+	}
+	post.Content = strings.Replace(post.Content, "_ueditor_page_break_tag_", "", -1)
+	//this.print_r(post)
+	post.Views++
+	post.Update("Views")
+	models.Cache.Delete("hotblog")
+	this.Data["post"] = post
+	this.Data["smalltitle"] = "文章内容"
+	this.setHeadMetas(post.Title, strings.Trim(post.Tags, ","), post.Title)
+	this.display("article")
 }
 
 //关于我
@@ -79,4 +103,10 @@ func (this *MainController) Album() {
 	this.Data["list"] = list
 	this.Data["pagebar"] = models.NewPager(int64(this.page), int64(count), int64(pagesize), "/album%d.html").ToString()
 	this.display("album")
+}
+
+//404
+func (this *MainController) GoTo404() {
+	this.setHeadMetas("没找到页面")
+	this.display("404")
 }
