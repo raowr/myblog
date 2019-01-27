@@ -41,6 +41,9 @@ func (this *MainController) Show() {
 	post.Views++
 	post.Update("Views")
 	models.Cache.Delete("hotblog")
+	pre, next := post.GetPreAndNext()
+	this.Data["pre"] = pre
+	this.Data["next"] = next
 	this.Data["post"] = post
 	this.Data["smalltitle"] = "文章内容"
 	this.setHeadMetas(post.Title, strings.Trim(post.Tags, ","), post.Title)

@@ -19,14 +19,14 @@
     
     </div>
     <div class="ad"> </div>
-    {{/*<div class="nextinfo">*/}}
-            {{/*{{if .pre}}*/}}
-                {{/*<p>上一篇：<a href="{{.pre.Link}}">{{str2html .pre.Title}}</a></p>*/}}
-            {{/*{{end}}*/}}
-            {{/*{{if .next}}*/}}
-                {{/*<p>下一篇：<a href="{{.next.Link}}">{{str2html .next.Title}}</a></p>*/}}
-            {{/*{{end}}*/}}
-    {{/*</div>*/}}
+    <div class="nextinfo">
+            {{if .pre}}
+                <p>上一篇：<a href="/article/{{.pre.Id}}">{{str2html .pre.Title}}</a></p>
+            {{end}}
+            {{if .next}}
+                <p>下一篇：<a href="/article/{{.next.Id}}">{{str2html .next.Title}}</a></p>
+            {{end}}
+    </div>
     <div class="duoshuo">
         <div class="ds-thread"></div>
     </div>

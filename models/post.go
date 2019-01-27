@@ -74,3 +74,14 @@ func (m *Post) Delete() error {
 func (m *Post) Query() orm.QuerySeter {
 	return orm.NewOrm().QueryTable(m)
 }
+
+func (m *Post) GetPreAndNext() (pre, next *Post) {
+	pre = new(Post)
+	next = new(Post)
+	err := new(Post).Query().Filter("id__lt", m.Id).Filter("status", 0).Filter("urltype", 0).Limit(1).One(pre)
+	err = new(Post).Query().Filter("id__gt", m.Id).Filter("status", 0).Filter("urltype", 0).Limit(1).One(next)
+	if err == orm.ErrNoRows {
+		next = nil
+	}
+	return
+}
