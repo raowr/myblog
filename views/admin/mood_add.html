@@ -31,11 +31,12 @@
     <el-form-item label="说说图片">
         <el-upload
                 class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="/admin/article/upload"
+                name="coverFile"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-            <img v-if="mooddata.cover" :src="mooddata.cover" class="avatar">
+            <img v-if="mooddata.cover" :src="mooddata.coverUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
     </el-form-item>
@@ -82,6 +83,7 @@
         data:{
             mooddata:{
                 cover:'',
+                coverUrl:'',
                 content:''
             }
         },
@@ -116,7 +118,8 @@
                 console.log(file);
             },
             handleAvatarSuccess(res, file) {
-                this.mooddata.cover = URL.createObjectURL(file.raw);
+                this.mooddata.cover = res;
+                this.mooddata.coverUrl = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {
                 // const isJPG = file.type === 'image/jpeg';

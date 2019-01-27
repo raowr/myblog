@@ -35,11 +35,12 @@
         <el-form-item label="相册封面" prop="imageUrl" style="width: 400px;">
             <el-upload
                     class="avatar-uploader"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="/admin/article/upload"
+                    name="coverFile"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+                <img v-if="form.image" :src="form.image" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
         </el-form-item>
@@ -57,12 +58,14 @@
             form:{
                 name:'',
                 rank:'',
-                imageUrl:''
+                imageUrl:'',
+                image:''
             },
         },
         methods: {
             handleAvatarSuccess(res, file) {
-                this.form.imageUrl = URL.createObjectURL(file.raw);
+                this.form.imageUrl = res;
+                this.form.image = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {
                 const isLt2M = file.size / 1024 / 1024 < 2;
